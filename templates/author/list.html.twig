@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Liste des auteurs</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 20px;
+            }
+
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+
+            table {
+                width: 80%;
+                margin: 20px auto;
+                border-collapse: collapse;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            tr:hover {
+                background-color: #ddd;
+            }
+
+            td img {
+                border-radius: 5px;
+            }
+
+            a {
+                text-decoration: none;
+                color: #4CAF50;
+                font-weight: bold;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .stats {
+                margin: 20px auto;
+                text-align: center;
+                font-size: 1.2em;
+                color: #555;
+            }
+
+            .total-books {
+                color: #333;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        {% if authors is not defined or authors is empty %}
+            <h1>Liste d'auteurs n'est pas disponible</h1>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Image</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for author in authors %}
+                    <tr>
+                        <td>{{ author.username | upper }}</td>
+                        <td><img width="100" src="{{ asset(author.picture) }}" alt="Image de {{ author.username }}"></td>
+                        <td><a href="{{ path('detail', {'id': author.id}) }}">Détails</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <div class="stats">
+            <p>Le nombre des acteurs : <span class="total-books">{{ authors | length }}</span></p>
+            {% set somme = 0 %}
+            {% for author in authors %}
+                {% set somme = somme + author.nb_books %}
+            {% endfor %}
+            <p>Le nombre total de livres : <span class="total-books">{{ somme }}</span></p>
+        </div>
+    </body>
+</html>
